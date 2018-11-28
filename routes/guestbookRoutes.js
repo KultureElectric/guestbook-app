@@ -4,14 +4,14 @@ const Entry = mongoose.model("entries");
 
 module.exports = app => {
   app.get("/", async (req, res) => {
-    const testEntry = new Entry({
-      user: "ruben",
-      heading: "test",
-      body: "asdfasdf"
-    });
+    const entries = await Entry.find({});
 
-    await testEntry.save();
+    res.send(entries);
+  });
 
-    res.send("Entry sent");
+  app.post("/", async (req, res) => {
+    console.log(req.body);
+
+    res.send("done");
   });
 };

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchEntries } from "../actions";
+import { Link } from "react-router-dom";
 
 class EntryList extends Component {
   componentDidMount() {
@@ -13,10 +14,9 @@ class EntryList extends Component {
         <div className="card blue-grey darken-1">
           <div className="card-content white-text">
             <span className="card-title">{entry.heading}</span>
+            <h6>{entry.user}</h6>
             <p>{entry.body}</p>
-            <div className="card-action">
-              <a href="#">{entry.user}</a>
-            </div>
+            <div className="card-action" />
           </div>
         </div>
       );
@@ -24,7 +24,16 @@ class EntryList extends Component {
   }
 
   render() {
-    return <div>{this.renderEntries()}</div>;
+    return (
+      <div>
+        {this.renderEntries()}
+        <div className="fixed-action-btn">
+          <Link to="/new" className="btn-floating btn-large right">
+            <i className="material-icons">add</i>
+          </Link>
+        </div>
+      </div>
+    );
   }
 }
 

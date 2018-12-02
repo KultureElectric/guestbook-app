@@ -3,6 +3,8 @@ import { Field, reduxForm } from "redux-form";
 import _ from "lodash";
 import EntryField from "./EntryField";
 import { Link } from "react-router-dom";
+import { sendEntry } from "../actions";
+import { connect } from "react-redux";
 
 const entryFields = [
   { label: "Your Title", name: "heading" },
@@ -11,8 +13,8 @@ const entryFields = [
 ];
 
 class NewEntry extends Component {
-  handleSubmit() {
-    console.log("submit successful");
+  submitEntry(e) {
+    sendEntry(e);
   }
 
   renderFields() {
@@ -32,7 +34,7 @@ class NewEntry extends Component {
   render() {
     return (
       <div className="New-Entry">
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.props.handleSubmit(this.submitEntry)}>
           {this.renderFields()}
           <Link className="red btn-flat white-text left" to="/">
             Back
@@ -46,6 +48,15 @@ class NewEntry extends Component {
   }
 }
 
+const mapStateToProps = ({ form }) => {
+  return { formValues: form.entryForm };
+};
+
 export default reduxForm({
   form: "entryForm"
-})(NewEntry);
+})(
+  connect(
+    mapStateToProps,
+    { sendEntry }
+  )(NewEntry)
+);

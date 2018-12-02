@@ -9,3 +9,7 @@ export const fetchEntries = () => async dispatch => {
     payload: res.data
   });
 };
+
+export const sendEntry = entry => {
+  console.log(entry);
+};

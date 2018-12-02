@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import { Field, reduxForm } from "redux-form";
 import _ from "lodash";
 import EntryField from "./EntryField";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { sendEntry } from "../actions";
 import { connect } from "react-redux";
 
@@ -12,12 +12,12 @@ const entryFields = [
   { label: "Your text", name: "body" }
 ];
 
-class NewEntry extends Component {
-  submitEntry(e) {
-    sendEntry(e);
-  }
+const NewEntry = props => {
+  const submitEntry = values => {
+    props.sendEntry(values, props.history);
+  };
 
-  renderFields() {
+  const renderFields = () => {
     return _.map(entryFields, ({ label, name }) => {
       return (
         <Field
@@ -29,24 +29,22 @@ class NewEntry extends Component {
         />
       );
     });
-  }
+  };
 
-  render() {
-    return (
-      <div className="New-Entry">
-        <form onSubmit={this.props.handleSubmit(this.submitEntry)}>
-          {this.renderFields()}
-          <Link className="red btn-flat white-text left" to="/">
-            Back
-          </Link>
-          <button type="submit" className="teal btn-flat right white-text">
-            Submit
-          </button>
-        </form>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="New-Entry">
+      <form onSubmit={props.handleSubmit(submitEntry)}>
+        {renderFields()}
+        <Link className="red btn-flat white-text left" to="/">
+          Back
+        </Link>
+        <button type="submit" className="teal btn-flat right white-text">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
 
 const mapStateToProps = ({ form }) => {
   return { formValues: form.entryForm };
@@ -55,8 +53,10 @@ const mapStateToProps = ({ form }) => {
 export default reduxForm({
   form: "entryForm"
 })(
-  connect(
-    mapStateToProps,
-    { sendEntry }
-  )(NewEntry)
+  withRouter(
+    connect(
+      mapStateToProps,
+      { sendEntry }
+    )(NewEntry)
+  )
 );

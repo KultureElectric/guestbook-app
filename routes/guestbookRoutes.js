@@ -13,5 +13,8 @@ module.exports = app => {
     const { user, heading, body } = req.body;
 
     const newEntry = await new Entry({ user, heading, body }).save();
+
+    const entries = await Entry.find({});
+    res.send(entries);
   });
 };

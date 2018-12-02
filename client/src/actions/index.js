@@ -10,6 +10,12 @@ export const fetchEntries = () => async dispatch => {
   });
 };
 
-export const sendEntry = entry => {
-  console.log(entry);
+export const sendEntry = (entry, history) => async dispatch => {
+  const res = await axios.post("/api", entry);
+
+  history.push("/");
+  dispatch({
+    type: FETCH_ENTRIES,
+    payload: res.data
+  });
 };

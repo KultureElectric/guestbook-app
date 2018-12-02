@@ -9,7 +9,7 @@ class EntryList extends Component {
   }
 
   renderEntries() {
-    return this.props.entries.map(entry => {
+    return this.props.entries.reverse().map(entry => {
       return (
         <div className="card blue-grey darken-1">
           <div className="card-content white-text">
